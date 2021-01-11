@@ -1,7 +1,7 @@
 ARMGNU ?= arm-none-eabi
 
 BUILD = build/
-SRC = src/
+SRC = src/kernel/
 
 TARGET = target.img
 LIST = target.list
