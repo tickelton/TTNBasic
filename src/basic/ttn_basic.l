@@ -11,6 +11,7 @@
 \"[^\"\n]*\"	{ yylval.s = strdup(yytext); return STRING; }
 PRINT		{ return PRINT; }
 RUN		{ return RUN; }
+LIST		{ return LIST; }
 \n		{ return ENDL; }
 
 %%

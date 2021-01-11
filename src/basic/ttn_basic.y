@@ -1,5 +1,8 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "ttn_basic.h"
 
 void yyerror(char *s, ...);
 int yylex();
@@ -14,9 +17,12 @@ FILE *yyin;
 %token PRINT
 %token RUN
 %token ENDL
+%token LIST
 
 %token <digit> LINE
 %token <s> STRING
+
+%type <s> program
 
 %%
 
@@ -31,12 +37,19 @@ line:
 	;
 
 statement:
-	LINE program		{ printf("> line %d\n", $1); }
-	| RUN			{ printf("> running...\n"); }
+	LINE program		{ add($1, $2); }
+	| RUN			{ execute(); }
+	| LIST			{ list(); }
 	;
 
 program:
-	PRINT STRING		{ printf(">\tPRINT %s\n", $2); }
+	PRINT STRING		{
+					size_t len = strlen("PRINT")+strlen($2)+2;
+					char *p = malloc(len);
+					memset(p, 0, len);
+					snprintf(p, len, "PRINT %s", $2);
+					$$ = p;
+				}
 	;
 
 %%
